@@ -46,7 +46,7 @@ spring:
         # 启动时是否默认启动容器，默认 true
         auto-startup: true
         # 被拒绝时重新进入队列
-        default-requeue-rejected: true
+        default-requeue-rejected: false
     template:
       retry:
         # 发布重试，默认 false

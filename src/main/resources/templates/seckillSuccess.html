@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>秒杀成功</title>
+    <link rel="stylesheet" th:href="@{/css/seckill.css}">
+</head>
+<body>
+<header class="site-header">
+    <div class="header-inner">
+        <a class="brand" th:href="@{/goods/toDetail}">
+            <span class="brand-mark">秒</span>
+            <span>限时秒杀</span>
+        </a>
+    </div>
+</header>
+
+<main class="result-page">
+    <section class="result-panel">
+        <div class="result-icon">✓</div>
+        <h1>抢购成功</h1>
+        <p class="panel-copy" th:text="${goods != null ? goods.goodsName + ' 已下单' : '订单已创建'}">订单已创建</p>
+        <div class="result-order">
+            订单号：<span th:text="${orderId}">--</span>
+        </div>
+        <div class="result-actions">
+            <a class="primary-button" th:href="@{/goods/toDetail}">继续浏览</a>
+        </div>
+    </section>
+</main>
+</body>
+</html>

@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>限时秒杀</title>
+    <link rel="stylesheet" th:href="@{/css/seckill.css}">
+</head>
+<body>
+<header class="site-header">
+    <div class="header-inner">
+        <a class="brand" th:href="@{/goods/toDetail}">
+            <span class="brand-mark">秒</span>
+            <span>限时秒杀</span>
+        </a>
+        <div class="header-actions" data-user-actions>
+            <a class="header-link" th:href="@{/user/settings}" data-settings-link hidden>账号设置</a>
+            <span class="user-chip" data-user-name hidden>用户</span>
+            <a class="header-link primary" th:href="@{/tologin}" data-login-link>登录</a>
+        </div>
+    </div>
+</header>
+
+<main class="page-shell">
+    <section class="hero">
+        <div class="hero-copy">
+            <p class="eyebrow">TODAY'S FLASH SALE</p>
+            <h1>好价格，<br>不必等。</h1>
+            <p>精选商品限时开抢，价格、库存和场次时间均来自当前秒杀活动。</p>
+            <div class="hero-timer">
+                <span id="globalTimerLabel">本场倒计时</span>
+                <strong id="globalTimerValue">--:--:--</strong>
+            </div>
+        </div>
+        <div class="hero-image" th:if="${goodList != null and !#lists.isEmpty(goodList)}">
+            <img th:src="${#strings.startsWith(goodList[0].goodsImg, 'http') ? goodList[0].goodsImg : '/' + goodList[0].goodsImg}"
+                 th:alt="${goodList[0].goodsName}">
+        </div>
+    </section>
+
+    <section>
+        <div class="section-head">
+            <div>
+                <h2>本场秒杀商品</h2>
+                <p>共 <strong th:text="${goodList == null ? 0 : #lists.size(goodList)}">0</strong> 件商品</p>
+            </div>
+            <div class="filters" aria-label="商品状态筛选">
+                <button class="filter-button is-active" type="button" data-filter="all">全部</button>
+                <button class="filter-button" type="button" data-filter="live">抢购中</button>
+                <button class="filter-button" type="button" data-filter="upcoming">即将开始</button>
+                <button class="filter-button" type="button" data-filter="ended">已结束</button>
+            </div>
+        </div>
+
+        <div class="product-grid">
+            <article class="product-card"
+                     data-product-card
+                     th:each="goods : ${goodList}"
+                     th:attr="data-start=${goods.startTime},
+                              data-end=${goods.endTime},
+                              data-stock=${goods.stockCount}">
+                <div class="product-media">
+                    <span class="status-badge" data-status-label>计算中</span>
+                    <a th:href="@{'/goods/toList/' + ${goods.id}}">
+                        <img th:src="${#strings.startsWith(goods.goodsImg, 'http') ? goods.goodsImg : '/' + goods.goodsImg}"
+                             th:alt="${goods.goodsName}"
+                             loading="lazy">
+                    </a>
+                </div>
+                <div class="product-body">
+                    <h3 class="product-title">
+                        <a th:href="@{'/goods/toList/' + ${goods.id}}" th:text="${goods.goodsName}">商品名称</a>
+                    </h3>
+                    <p class="product-subtitle" th:text="${goods.goodsTitle} ?: '限时秒杀商品'">商品标题</p>
+
+                    <div class="price-row">
+                        <strong>
+                            <small>¥</small>
+                            <span th:text="${#numbers.formatDecimal(goods.seckillPrice, 1, 2)}">0.00</span>
+                        </strong>
+                        <span class="old-price"
+                              th:text="'¥' + ${#numbers.formatDecimal(goods.goodsPrice, 1, 2)}">¥0.00</span>
+                    </div>
+
+                    <div class="stock-row">
+                        <span>剩余库存</span>
+                        <strong th:text="${goods.stockCount} + ' 件'">0 件</strong>
+                    </div>
+                    <div class="stock-track" aria-hidden="true">
+                        <div class="stock-progress"
+                             th:style="|--stock-progress: ${goods.stockCount != null and goods.stockCount < 100 ? goods.stockCount : 100}%;|">
+                        </div>
+                    </div>
+
+                    <div class="time-grid">
+                        <div class="time-cell">
+                            <span class="label">开始时间</span>
+                            <span class="value" th:text="${goods.startTime}">--</span>
+                        </div>
+                        <div class="time-cell">
+                            <span class="label">结束时间</span>
+                            <span class="value" th:text="${goods.endTime}">--</span>
+                        </div>
+                    </div>
+
+                    <div class="card-footer">
+                        <span class="countdown">
+                            <span data-countdown-label>距开始</span>
+                            <strong data-countdown-value>--:--:--</strong>
+                        </span>
+                        <form class="buy-form" th:action="@{/seckill/doseckill}" method="post">
+                            <input type="hidden" name="goodsid" th:value="${goods.id}">
+                            <button class="buy-button" type="submit" data-buy-button disabled>即将开始</button>
+                        </form>
+                    </div>
+                </div>
+            </article>
+        </div>
+
+        <div class="empty-state" id="emptyState">
+            <strong>本场暂无商品</strong>
+            <span>新的秒杀商品上架后会在这里展示。</span>
+        </div>
+    </section>
+</main>
+
+<script th:src="@{/js/seckill.js}"></script>
+</body>
+</html>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yr.seckilldemo.mapper.SeckillOrderMapper">
+
+    <insert id="insertSeOrder">
+        INSERT INTO t_seckill_order (
+            user_id,
+            order_id,
+            goods_id
+        ) VALUES (
+            #{userId},
+            #{orderId},
+            #{goodsId}
+        )
+    </insert>
+
+    <select id="getOne" resultType="int">
+        SELECT COUNT(1)
+        FROM t_seckill_order
+        WHERE user_id = #{userId}
+          AND goods_id = #{goodsId}
+    </select>
+
+</mapper>

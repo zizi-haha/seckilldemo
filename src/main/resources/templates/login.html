@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>登录</title>
+    <link rel="stylesheet" th:href="@{/css/seckill.css}">
+</head>
+<body>
+<header class="site-header">
+    <div class="header-inner">
+        <a class="brand" th:href="@{/goods/toDetail}">
+            <span class="brand-mark">秒</span>
+            <span>限时秒杀</span>
+        </a>
+        <a class="header-link" th:href="@{/goods/toDetail}">返回商品</a>
+    </div>
+</header>
+
+<main class="login-page">
+    <section class="login-panel">
+        <h1>账号登录</h1>
+        <p class="panel-copy">登录后即可参与限时抢购。</p>
+
+        <form id="loginForm" th:action="@{/api/login}" method="post">
+            <div class="field">
+                <label for="mobile">手机号</label>
+                <input id="mobile" name="id" type="tel" inputmode="numeric"
+                       autocomplete="username" placeholder="请输入手机号" required>
+            </div>
+            <div class="field">
+                <label for="password">密码</label>
+                <input id="password" name="password" type="password"
+                       autocomplete="current-password" placeholder="请输入密码" required>
+            </div>
+            <button class="primary-button" type="submit">登录</button>
+            <p class="form-message" id="loginMessage" role="alert"></p>
+        </form>
+    </section>
+</main>
+
+<div id="captcha-box" aria-live="polite"></div>
+<script th:src="@{/js/load.min.js}"></script>
+<script th:src="@{/js/seckill.js}"></script>
+</body>
+</html>

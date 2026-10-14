@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yr.seckilldemo.mapper.GoodsMapper">
+
+    <select id="selectGoodes" resultType="com.yr.seckilldemo.vo.GoodsVO">
+        SELECT
+            g.id,
+            g.goods_img AS goodsImg,
+            g.goods_price AS goodsPrice,
+            g.goods_name AS goodsName,
+            g.goods_stock AS goodsStock,
+            g.goods_detail AS goodsDetail,
+            g.goods_title AS goodsTitle,
+            tg.end_date AS endTime,
+            tg.stock_count AS stockCount,
+            tg.start_date AS startTime,
+            tg.seckill_price AS seckillPrice
+        FROM goods g
+        LEFT JOIN t_seckill_goods tg ON g.id = tg.goods_id
+        ORDER BY g.id
+    </select>
+
+    <select id="selectGoodsById" resultType="com.yr.seckilldemo.vo.GoodsVO">
+        SELECT
+            g.id,
+            g.goods_img AS goodsImg,
+            g.goods_price AS goodsPrice,
+            g.goods_name AS goodsName,
+            g.goods_stock AS goodsStock,
+            g.goods_detail AS goodsDetail,
+            g.goods_title AS goodsTitle,
+            tg.end_date AS endTime,
+            tg.stock_count AS stockCount,
+            tg.start_date AS startTime,
+            tg.seckill_price AS seckillPrice
+        FROM goods g
+        LEFT JOIN t_seckill_goods tg ON g.id = tg.goods_id
+        WHERE g.id = #{goodsId}
+    </select>
+
+</mapper>
