@@ -13,6 +13,8 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.concurrent.TimeUnit;
+
 @Service
 public class UserServiceImpl implements UserService {
 
@@ -29,7 +31,12 @@ public class UserServiceImpl implements UserService {
 
         User user = (User) redisTemplate.opsForValue().get("user:" + token);
         if (user != null) {
-            CookieUtils.setCookie(response, request, "userTicket", token, 30 * 60);
+
+                // 续期，让服务端 ticket 和浏览器 cookie 的过期时间保持一致
+                redisTemplate.expire("user:" + token, 120, TimeUnit.MINUTES);
+                CookieUtils.setCookie(response, request, "userTicket", token, 120 * 60);
+
+           // CookieUtils.setCookie(response, request, "userTicket", token, 30 * 60);
         }
         return user;
     }

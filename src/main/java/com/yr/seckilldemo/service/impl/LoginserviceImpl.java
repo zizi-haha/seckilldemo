@@ -44,7 +44,7 @@ public class LoginserviceImpl implements LoginService {
         }
 
         String token = UUidUtils.uuid();
-        redisTemplate.opsForValue().set("user:" + token, user, 30, TimeUnit.MINUTES);
+        redisTemplate.opsForValue().set("user:" + token, user, 120, TimeUnit.MINUTES);
         CookieUtils.setCookie(response, request, "userTicket", token, 30 * 60);
         return Result.success(user);
     }

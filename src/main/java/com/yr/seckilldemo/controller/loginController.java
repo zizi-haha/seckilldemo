@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Value;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -21,6 +22,8 @@ public class loginController {
 
     @Autowired
     private LoginService loginService;
+    @Value("${seckill.captcha.enabled:true}")
+    private boolean captchaEnabled;
 
     @GetMapping("/tologin")
     public String tologin() {
@@ -36,7 +39,7 @@ public class loginController {
             HttpSession session) {
         Object captchaPassed = session.getAttribute("login:captcha:passed");
 
-        if (!Boolean.TRUE.equals(captchaPassed)) {
+        if (captchaEnabled && !Boolean.TRUE.equals(captchaPassed)) {
             return Result.error(ResultEnum.CAPTCHA_ERROR);
         }
 

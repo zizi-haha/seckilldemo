@@ -4,8 +4,8 @@ spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/seckill?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
-    username: root
-    password: 123456
+    username: ${DB_USERNAME:root}
+    password: "${DB_PASSWORD:123456}"
     hikari:
       pool-name: DateHikariCP
       maximum-pool-size: 50
@@ -26,11 +26,13 @@ spring:
 
   rabbitmq:
 
-    host: 192.168.10.5
 
-    username: guest
+    host: ${RABBITMQ_HOST:192.168.10.5}
 
-    password: guest
+    username: ${RABBITMQ_USERNAME:guest}
+
+    password: "${RABBITMQ_PASSWORD:guest}"
+
     # 虚拟主机
     virtual-host: /
     # 端口
