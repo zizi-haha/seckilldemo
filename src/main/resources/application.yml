@@ -20,13 +20,19 @@ spring:
       port: 6379
       database: 1
       timeout: 5000
+      lettuce:
+        pool:
+          max-active: 50
+          max-idle: 20
+          min-idle: 5
+          max-wait: 1000ms
     session:
       store-type: redis
       timeout: 1800
 
   threads:
     virtual:
-      enabled: false
+      enabled: true
 
   rabbitmq:
 
@@ -36,6 +42,9 @@ spring:
     username: ${RABBITMQ_USERNAME:guest}
 
     password: "${RABBITMQ_PASSWORD:guest}"
+    cache:
+      channel:
+        size: 450
 
     # 虚拟主机
     virtual-host: /
@@ -54,6 +63,7 @@ spring:
         # 被拒绝时重新进入队列
         default-requeue-rejected: false
     template:
+      observation-enabled: true
       retry:
         # 发布重试，默认 false
         enabled: true
@@ -110,4 +120,21 @@ mybatis-plus:
 logging:
   level:
     com.yr.seckilldemo: info
+
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,metrics,prometheus
+  endpoint:
+    health:
+      show-details: always
+  metrics:
+    tags:
+      application: seckill-demo
+    distribution:
+      percentiles:
+        "[http.server.requests]": 0.5, 0.95, 0.99
+
 

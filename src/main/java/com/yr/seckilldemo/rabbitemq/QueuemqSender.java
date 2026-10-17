@@ -1,6 +1,8 @@
 package com.yr.seckilldemo.rabbitemq;
 
 
+import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.core.instrument.Timer;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +15,8 @@ public class QueuemqSender {
 
     @Autowired
     private RabbitTemplate rabbitTemplate;
+    @Autowired
+    private MeterRegistry meterRegistry;
 //    public void send(Object message){
 //        log.info("发送消息{}",message);
 //        rabbitTemplate.convertAndSend("finout_exchange","",message);
@@ -30,6 +34,11 @@ public class QueuemqSender {
 
     public void sendSeckillmessage(String message){
         log.info("发送消息{}",message);
-        rabbitTemplate.convertAndSend("seckillExchange","seckill.message",message);
+        Timer.Sample sample=Timer.start(meterRegistry);
+        try{
+        rabbitTemplate.convertAndSend("seckillExchange","seckill.message",message);}
+        finally {
+            sample.stop(meterRegistry.timer("seckillExchange", "send", "success"));
+        }
     }
 }
