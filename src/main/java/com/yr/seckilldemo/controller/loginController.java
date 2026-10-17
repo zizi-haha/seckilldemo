@@ -37,6 +37,8 @@ public class loginController {
             HttpServletRequest request,
             HttpServletResponse response,
             HttpSession session) {
+
+       // System.out.println("virtual = " + Thread.currentThread().isVirtual());//虚拟线程
         Object captchaPassed = session.getAttribute("login:captcha:passed");
 
         if (captchaEnabled && !Boolean.TRUE.equals(captchaPassed)) {

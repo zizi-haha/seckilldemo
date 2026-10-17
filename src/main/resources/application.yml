@@ -24,6 +24,10 @@ spring:
       store-type: redis
       timeout: 1800
 
+  threads:
+    virtual:
+      enabled: false
+
   rabbitmq:
 
 
@@ -61,7 +65,10 @@ spring:
         max-interval: 10000ms
         # 重试的间隔乘数。比如配 2.0，第一次就等 10s，第二次就等 20s，第三次就等 40s
         multiplier: 1
-
+server:
+  tomcat:
+    accept-count: 1000
+    max-connections: 10000
 # 滑块验证码配置， 详细请看 cloud.tianai.captcha.autoconfiguration.ImageCaptchaProperties 类
 captcha:
   # 如果项目中使用到了redis，滑块验证码会自动把验证码数据存到redis中， 这里配置redis的key的前缀,默认是captcha:slider

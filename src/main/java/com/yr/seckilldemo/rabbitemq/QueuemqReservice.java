@@ -36,7 +36,7 @@ public class QueuemqReservice {
 
         try {
             Long orderId = iSeckillGoodsServicer.doSeckill(seckillMessage.getUserId(), seckillMessage.getGoodsId());
-            stringRedisTemplate.opsForValue().set("order:" + seckillMessage.getGoodsId() + ":" + seckillMessage.getGoodsId(), String.valueOf(orderId));
+            stringRedisTemplate.opsForValue().set("order:" + seckillMessage.getUserId() + ":" + seckillMessage.getGoodsId(), String.valueOf(orderId));
 
 
         } catch (DuplicateKeyException e) {//违反数据库唯一约束
